@@ -47,7 +47,7 @@ public class ApiMethods {
         response = request.when()
                 .basePath("/wall.post")
                 .formParam("owner_id", "706364498")
-                .formParam("access_token", "9118837e14520bc49088273190071c6710a1f4c9d484b22493dc857a5762927e465888b2254d44fc213ce")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
                 .formParam("v","5.131")
                 .formParam("message",message)
                 .post()
@@ -63,7 +63,7 @@ public class ApiMethods {
         response = request.when()
                 .basePath("/photos.getWallUploadServer")
                 .formParam("owner_id", "706364498")
-                .formParam("access_token", "9118837e14520bc49088273190071c6710a1f4c9d484b22493dc857a5762927e465888b2254d44fc213ce")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
                 .formParam("v","5.131")
                 .post()
                 .then()
@@ -98,7 +98,7 @@ public class ApiMethods {
                 .formParam("server", server)
                 .formParam("photo", photo)
                 .formParam("hash", hash)
-                .formParam("access_token", "9118837e14520bc49088273190071c6710a1f4c9d484b22493dc857a5762927e465888b2254d44fc213ce")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
                 .formParam("v","5.131")
                 .post()
                 .then()
@@ -115,11 +115,11 @@ public class ApiMethods {
         response = request.when()
                 .basePath("/wall.edit")
                 .formParam("owner_id", "706364498")
-                .formParam("access_token", "9118837e14520bc49088273190071c6710a1f4c9d484b22493dc857a5762927e465888b2254d44fc213ce")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
                 .formParam("v","5.131")
                 .formParam("post_id",post_id)
                 .formParam("message",message)
-                .formParam("attachments","photo", "706364498_"+ photo_id)
+                .formParam("attachments","photo" + "706364498_"+ photo_id)
                 .post()
                 .then()
                 .statusCode(200)
@@ -132,7 +132,7 @@ public class ApiMethods {
         response = request.when()
                 .basePath("/wall.createComment")
                 .formParam("owner_id", "706364498")
-                .formParam("access_token", "9118837e14520bc49088273190071c6710a1f4c9d484b22493dc857a5762927e465888b2254d44fc213ce")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
                 .formParam("v","5.131")
                 .formParam("post_id",post_id)
                 .formParam("message",message)
@@ -142,36 +142,51 @@ public class ApiMethods {
                 .extract().response();
     }
 
-   /* public static int likesIsLiked(int post_id){
-        RestAssured.baseURI = PropertiesUtility.getStringValue(Resources.CONFIG.toString(),"urlAPI");
+    public static int likesIsLiked(int post_id){
+        RestAssured.baseURI = "https://api.vk.com/method/";
         request = RestAssured.given();
         response = request.when()
-                .basePath(Methods.LIKES_IS_LIKED.toString())
-                .formParam(VkFields.OWNER_ID.toString(), PropertiesUtility.getIntValue(Resources.TEST.toString(),"ownerId"))
-                .formParam(VkFields.ACCESS_TOKEN.toString(), PropertiesUtility.getStringValue(Resources.TEST.toString(),"token"))
-                .formParam(VkFields.VERSION.toString(),PropertiesUtility.getStringValue(Resources.CONFIG.toString(),"version"))
-                .formParam(VkFields.TYPE.toString(),PropertiesUtility.getStringValue(Resources.CONFIG.toString(), "typePost"))
-                .formParam(VkFields.ITEM_ID.toString(),post_id)
+                .basePath("/likes.isLiked")
+                .formParam("owner_id", "706364498")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
+                .formParam("v","5.131")
+                .formParam("type","post")
+                .formParam("item_id",post_id)
                 .post()
                 .then()
-                .statusCode(StatusCodes.GET_OK.toInteger())
+                .statusCode(200)
                 .extract().response();
         return  response.getBody().jsonPath().get("response.liked");
     }
 
     public static void wallDelete(int post_id){
-        RestAssured.baseURI = PropertiesUtility.getStringValue(Resources.CONFIG.toString(),"urlAPI");
+        RestAssured.baseURI = "https://api.vk.com/method/";
         request = RestAssured.given();
         response = request.when()
-                .basePath(Methods.WALL_DELETE.toString())
-                .formParam(VkFields.OWNER_ID.toString(), PropertiesUtility.getIntValue(Resources.TEST.toString(),"ownerId"))
-                .formParam(VkFields.ACCESS_TOKEN.toString(), PropertiesUtility.getStringValue(Resources.TEST.toString(),"token"))
-                .formParam(VkFields.VERSION.toString(),PropertiesUtility.getStringValue(Resources.CONFIG.toString(),"version"))
-                .formParam(VkFields.POST_ID.toString(),post_id)
+                .basePath("/wall.delete")
+                .formParam("owner_id", "706364498")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
+                .formParam("v","5.131")
+                .formParam("post_id",post_id)
                 .post()
                 .then()
-                .statusCode(StatusCodes.GET_OK.toInteger())
+                .statusCode(200)
                 .extract().response();
-    }*/
+    }
+
+    public static int postPin (int post_id) {
+        RestAssured.baseURI = "https://api.vk.com/method/";
+        request = RestAssured.given();
+        response = request.when()
+                .basePath("/wall.pin")
+                .formParam("owner_id", "706364498")
+                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
+                .formParam("v","5.131")
+                .formParam("post_id",post_id)
+                .post()
+                .then()
+                .extract().response();
+        return  response.getBody().jsonPath().get("response");
+    }
 
 }
