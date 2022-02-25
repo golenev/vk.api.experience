@@ -10,7 +10,10 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import javax.annotation.Resources;
 import java.io.File;
+import static utils.TestingConfigurations.*;
 import static io.restassured.RestAssured.given;
+import static utils.TestingConfigurations.*;
+import static utils.FileUtils.*;
 
 public class ApiMethods {
 
@@ -22,18 +25,18 @@ public class ApiMethods {
     private static Object hash;
 
     public static void prepareForResponse() {
-        RestAssured.baseURI = "https://api.vk.com/method/";
+        RestAssured.baseURI = getConfigValue("/baseUri");
         request = RestAssured.given()
                 .when()
-                .formParam("access_token", "93324a886def812db3af27f2a8f810e2b06045ca2978064add0d7b88cf1a11f8fbe647d77b82fb8e53f9f")
-                .formParam("v", "5.131");
+                .formParam(FormParamEnum.FORM_PARAM.getVersionToken(),getTestingValue("/token"))
+                .formParam(FormParamEnum.FORM_PARAM.getVersionApi(), getConfigValue("/apiVersion"));
     }
 
     public static int wallPost(String message) {
         prepareForResponse();
         response = request.when()
-                .basePath("/wall.post")
-                .formParam("message", message)
+                .basePath(getConfigValue("/wallPost"))
+                .formParam(FormParamEnum.FORM_PARAM.getMessage(), message)
                 .post()
                 .then()
                 .extract().response();
@@ -43,8 +46,8 @@ public class ApiMethods {
     public static void getWallUploadServer() {
         prepareForResponse();
         response = request.when()
-                .basePath("/photos.getWallUploadServer")
-                .formParam("owner_id", "706364498")
+                .basePath(getConfigValue("/getWallUploadServer"))
+                .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
                 .post()
                 .then()
                 .extract().response();
@@ -56,13 +59,13 @@ public class ApiMethods {
         RestAssured.baseURI = res;
         response = request.when()
                 .contentType(ContentTypeEnum.MULTIPART.getOption())
-                .multiPart("photo", new File("testPhoto.png"))
+                .multiPart(FormParamEnum.FORM_PARAM.getPhoto(), loadFile(getTestingValue("/filePath")))
                 .post(res)
                 .then()
                 .extract().response();
-        server = response.getBody().jsonPath().get("server");
-        photo = response.getBody().jsonPath().get("photo");
-        hash = response.getBody().jsonPath().get("hash");
+        server = response.getBody().jsonPath().get(FormParamEnum.FORM_PARAM.getServer());
+        photo = response.getBody().jsonPath().get(FormParamEnum.FORM_PARAM.getPhoto());
+        hash = response.getBody().jsonPath().get(FormParamEnum.FORM_PARAM.getHash());
     }
 
     public static int savePhotoToWall() {
@@ -70,10 +73,10 @@ public class ApiMethods {
         prepareForResponse();
         Response response1 = request
                 .when()
-                .basePath("/photos.saveWallPhoto")
-                .formParam("server", server)
-                .formParam("photo", photo)
-                .formParam("hash", hash)
+                .basePath(getConfigValue("/saveWallPhoto"))
+                .formParam(FormParamEnum.FORM_PARAM.getServer(), server)
+                .formParam(FormParamEnum.FORM_PARAM.getPhoto(), photo)
+                .formParam(FormParamEnum.FORM_PARAM.getHash(), hash)
                 .post()
                 .then()
                 .extract().response();
@@ -84,11 +87,11 @@ public class ApiMethods {
     public static void wallEdit(int post_id, String message, int photo_id) {
         prepareForResponse();
         response = request.when()
-                .basePath("/wall.edit")
-                .formParam("owner_id", "706364498")
-                .formParam("post_id", post_id)
-                .formParam("message", message)
-                .formParam("attachments", "photo" + "706364498_" + photo_id)
+                .basePath(getConfigValue("/wallEdit"))
+                .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
+                .formParam(FormParamEnum.FORM_PARAM.getPostId(), post_id)
+                .formParam(FormParamEnum.FORM_PARAM.getMessage(), message)
+                .formParam(FormParamEnum.FORM_PARAM.getAttachments(), FormParamEnum.FORM_PARAM.getPhoto() + getTestingValue("/photoOwnerId") + photo_id)
                 .post()
                 .then()
                 .extract().response();
@@ -97,10 +100,10 @@ public class ApiMethods {
     public static void wallCreateComment(int post_id, String message) {
         prepareForResponse();
         response = request.when()
-                .basePath("/wall.createComment")
-                .formParam("owner_id", "706364498")
-                .formParam("post_id", post_id)
-                .formParam("message", message)
+                .basePath(getConfigValue("/createComment"))
+                .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
+                .formParam(FormParamEnum.FORM_PARAM.getPostId(), post_id)
+                .formParam(FormParamEnum.FORM_PARAM.getMessage(), message)
                 .post()
                 .then()
                 .extract().response();
@@ -109,10 +112,10 @@ public class ApiMethods {
     public static int likesIsLiked(int post_id) {
         prepareForResponse();
         response = request.when()
-                .basePath("/likes.isLiked")
-                .formParam("owner_id", "706364498")
-                .formParam("type", "post")
-                .formParam("item_id", post_id)
+                .basePath(getConfigValue("/isLiked"))
+                .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
+                .formParam(FormParamEnum.FORM_PARAM.getType(), FormParamEnum.FORM_PARAM.getPost())
+                .formParam(FormParamEnum.FORM_PARAM.getItemId(), post_id)
                 .post()
                 .then()
                 .extract().response();
@@ -122,24 +125,12 @@ public class ApiMethods {
     public static void wallDelete(int post_id) {
         prepareForResponse();
         response = request.when()
-                .basePath("/wall.delete")
-                .formParam("owner_id", "706364498")
-                .formParam("post_id", post_id)
+                .basePath(getConfigValue("/wallDelete"))
+                .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
+                .formParam(FormParamEnum.FORM_PARAM.getPostId(), post_id)
                 .post()
                 .then()
                 .extract().response();
     }
 
-    public static int postPin(int post_id) {
-        prepareForResponse();
-        response = request.when()
-                .basePath("/wall.pin")
-                .formParam("owner_id", "706364498")
-                .formParam("post_id", post_id)
-                .post()
-                .then()
-                .extract().response();
-        return response.getBody().jsonPath().get("response");
-    }
-
-}
+  }

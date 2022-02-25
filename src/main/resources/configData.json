@@ -1,0 +1,12 @@
+{
+  "baseUri":"https://api.vk.com/method/",
+  "url": "https://vk.com/",
+  "apiVersion": "5.131",
+  "saveWallPhoto": "/photos.saveWallPhoto",
+  "getWallUploadServer": "/photos.getWallUploadServer",
+  "wallEdit": "/wall.edit",
+  "createComment": "/wall.createComment",
+  "isLiked": "/likes.isLiked",
+  "wallDelete": "/wall.delete",
+  "wallPost": "/wall.post"
+}
