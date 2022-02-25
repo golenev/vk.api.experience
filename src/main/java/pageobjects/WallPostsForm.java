@@ -27,12 +27,21 @@ public class WallPostsForm extends Form {
                 ElementsCount.MORE_THEN_ZERO, ElementState.EXISTS_IN_ANY_STATE);
     }
 
-    public String getValueFromAttribute(int index, String attribute) {
+    public List<IButton> getListOfAllPhotosFromWall(){
+        return this.getElementFactory().findElements(By.xpath("//a[contains(@class,'page_post_thumb_last_column')]"), ElementType.BUTTON,
+                ElementsCount.MORE_THEN_ZERO, ElementState.EXISTS_IN_ANY_STATE);
+    }
+
+    public String getValueFromPostAttribute(int index, String attribute) {
         return getListOfPostDate().get(index).getAttribute(attribute);
     }
 
     public boolean isListOfPostsPresent(int index) {
         return getListOfPostDate().get(index).state().isDisplayed();
+    }
+
+    public String getValueFromPhotoAttribute (int index, String attribute){
+        return getListOfAllPhotosFromWall().get(index).getAttribute(attribute);
     }
 
 

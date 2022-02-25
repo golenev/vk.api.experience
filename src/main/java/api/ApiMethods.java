@@ -81,7 +81,6 @@ public class ApiMethods {
         return photoId;
     }
 
-
     public static void wallEdit(int post_id, String message, int photo_id) {
         prepareForResponse();
         response = request.when()
