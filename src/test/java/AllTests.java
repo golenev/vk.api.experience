@@ -12,8 +12,6 @@ public class AllTests extends BaseTest{
     MyPage myPage = new MyPage();
     WallPostsForm wallPostsForm = new WallPostsForm();
 
-
-
     @Test
     public void firstTest(){
         browser = AqualityServices.getBrowser();
@@ -28,7 +26,7 @@ public class AllTests extends BaseTest{
         System.out.println("рандомное сообщение оставлено");
         Assert.assertEquals( ApiMethods.postPin(post_id), 1);
         //[UI] Не обновляя страницу убедиться, что на стене появилась запись с нужным текстом от правильного пользователя
-       Assert.assertEquals(RegExHelper.getIntAfterUnderlining(wallPostsForm.getTextFromPostDate(0), 1), post_id, "Ids of required posts don`t match");
+       Assert.assertEquals(RegExHelper.getIntAfterUnderlining(wallPostsForm.getValueFromAttribute(0, "href"), 1), post_id, "Ids of required posts don`t match");
 //[API] Отредактировать запись через запрос к API - изменить текст и добавить (загрузить) любую картинку.
         int photo_Id = ApiMethods.savePhotoToWall();
         ApiMethods.wallEdit(post_id, "newRandon", photo_Id);
