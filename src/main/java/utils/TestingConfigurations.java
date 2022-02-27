@@ -13,5 +13,9 @@ public class TestingConfigurations {
         return TestingEnvironment.getCurrentEnvironment("testingData.json").getValue(key).toString();
     }
 
+    public static String getRegExValue (String key) {
+        return TestingEnvironment.getCurrentEnvironment("regularExpression.json").getValue(key).toString();
+    }
+
 
 }

@@ -41,7 +41,7 @@ public class ApiMethods {
                 .post()
                 .then()
                 .extract().response();
-        return response.getBody().jsonPath().get("response.post_id");
+        return response.getBody().jsonPath().get(ResponseOptionEnum.RESPONSE_OPTION.getPostId());
     }
 
     public static void getWallUploadServer() {
@@ -52,7 +52,7 @@ public class ApiMethods {
                 .post()
                 .then()
                 .extract().response();
-        res = response.getBody().jsonPath().get("response.upload_url");
+        res = response.getBody().jsonPath().get(ResponseOptionEnum.RESPONSE_OPTION.getUploadUrl());
     }
 
     public static void sendPhotoToURL() {
@@ -81,7 +81,7 @@ public class ApiMethods {
                 .post()
                 .then()
                 .extract().response();
-        int photoId = response1.getBody().jsonPath().get("response[0].id");
+        int photoId = response1.getBody().jsonPath().get(ResponseOptionEnum.RESPONSE_OPTION.getListId());
         return photoId;
     }
 
@@ -92,7 +92,8 @@ public class ApiMethods {
                 .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
                 .formParam(FormParamEnum.FORM_PARAM.getPostId(), post_id)
                 .formParam(FormParamEnum.FORM_PARAM.getMessage(), message)
-                .formParam(FormParamEnum.FORM_PARAM.getAttachments(), String.valueOf(buildString(FormParamEnum.FORM_PARAM.getPhoto(),getTestingValue("/photoOwnerId"), photo_id )))
+                .formParam(FormParamEnum.FORM_PARAM.getAttachments(), String.valueOf(buildString(FormParamEnum.FORM_PARAM.getPhoto(),
+                        getTestingValue("/photoOwnerId"), photo_id )))
                 .post()
                 .then()
                 .extract().response();
@@ -120,7 +121,7 @@ public class ApiMethods {
                 .post()
                 .then()
                 .extract().response();
-        return response.getBody().jsonPath().get("response.liked");
+        return response.getBody().jsonPath().get(ResponseOptionEnum.RESPONSE_OPTION.getIsLiked());
     }
 
     public static void wallDelete(int post_id) {
