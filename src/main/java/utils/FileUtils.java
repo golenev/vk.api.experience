@@ -14,7 +14,8 @@ public class FileUtils {
         try {
             FileInputStream fileInputStream = new FileInputStream(path);
             Logger.getInstance().info("File was successfully read");
-        } catch (IOException ex) {
+        } catch (FileNotFoundException ex) {
+        } catch (IOException exception){
             Logger.getInstance().error("Sorry, file not found");
             Logger.getInstance().warn("Please, check your path");
         }

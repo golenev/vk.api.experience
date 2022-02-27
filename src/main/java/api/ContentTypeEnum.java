@@ -10,7 +10,6 @@ public enum ContentTypeEnum {
 
     public String option;
 
-
     ContentTypeEnum(String option) {
         this.option = option;
     }

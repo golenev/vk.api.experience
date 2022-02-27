@@ -1,7 +1,8 @@
 package api;
 
 public enum FormParamEnum {
-    FORM_PARAM("message", "owner_id", "photo", "server", "hash", "type", "post", "item_id", "attachments", "post_id", "v","access_token");
+    FORM_PARAM("message", "owner_id", "photo", "server", "hash", "type",
+            "post", "item_id", "attachments", "post_id", "v","access_token");
 
     String message;
     String ownerId;

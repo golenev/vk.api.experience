@@ -1,4 +1,6 @@
 import api.ApiMethods;
+import api.IndexEnum;
+import api.TypeAttributeEnum;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.logging.Logger;
 import org.testng.Assert;
@@ -11,9 +13,9 @@ import utils.RegExHelper;
 import static utils.TestingConfigurations.*;
 
 public class AllTests extends BaseTest{
-    LoginPage loginPage = new LoginPage();
-    MyPage myPage = new MyPage();
-    WallPostsForm wallPostsForm = new WallPostsForm();
+    private final LoginPage loginPage = new LoginPage();
+    private final MyPage myPage = new MyPage();
+    private final  WallPostsForm wallPostsForm = new WallPostsForm();
 
     @Test
     public void firstTest(){
@@ -23,47 +25,32 @@ public class AllTests extends BaseTest{
         loginPage.setPasswordField(getTestingValue("/password"));
         loginPage.loginButtonClick();
         myPage.myPageBntClick();
-//4[API] С помощью запроса к API создать запись со случайно сгенерированным текстом на стене и получить id записи из ответа
+        Logger.getInstance().info("You have logged in to the desired page via GUI");
         Logger.getInstance().info("Step 4 has been started");
         int post_id = ApiMethods.wallPost(RandomGenerator.faker.app().author());
-//5[UI] Не обновляя страницу убедиться, что на стене появилась запись с нужным текстом от правильного пользователя
         Logger.getInstance().info("Step 5 has been started");
-       Assert.assertEquals(RegExHelper.getIntAfterUnderlining(wallPostsForm.getValueFromPostAttribute(0, "href"), 1), post_id, "Ids of required posts don`t match");
-//6[API] Отредактировать запись через запрос к API - изменить текст и добавить (загрузить) любую картинку.
+        Assert.assertEquals(RegExHelper.getIntAfterUnderlining(wallPostsForm.getValueFromPostAttribute(IndexEnum.ZERO.getIndexValue(),
+               TypeAttributeEnum.HREF.getType()), IndexEnum.FIRST.getIndexValue()), post_id, "Ids of required posts don`t match");
         Logger.getInstance().info("Step 6 has been started");
         int photo_Id = ApiMethods.savePhotoToWall();
         ApiMethods.wallEdit(post_id, RandomGenerator.faker.address().city(), photo_Id);
-
-//7[UI] Не обновляя страницу убедиться, что изменился текст сообщения и добавилась загруженная картинка(убедиться, что картинки одинаковые)
         Logger.getInstance().info("Step 7 has been started");
-       Assert.assertEquals(RegExHelper.getIntAfterUnderlining(wallPostsForm.getValueFromPhotoAttribute(0, "href"), 1), photo_Id, "sorry, ids of required photos don`t match");
-
-//8[API] Используя запрос к API добавить комментарий к записи со случайным текстом
+        Assert.assertEquals(RegExHelper.getIntAfterUnderlining(wallPostsForm.getValueFromPhotoAttribute(IndexEnum.ZERO.getIndexValue(),
+               TypeAttributeEnum.HREF.getType()), IndexEnum.FIRST.getIndexValue()), photo_Id, "sorry, ids of required photos don`t match");
         Logger.getInstance().info("Step 8 has been started");
         String comment = RandomGenerator.faker.artist().name();
         ApiMethods.wallCreateComment(post_id, comment);
-
-//9[UI] Не обновляя страницу убедиться, что к нужной записи добавился комментарий от правильного пользователя
         Logger.getInstance().info("Step 9 has been started");
         wallPostsForm.getHiddenComments();
-        Assert.assertEquals(comment, wallPostsForm.getTextFromRequiredComment(0), "sorry, your textBoxes don`t match");
-
-//10[UI] Через UI оставить лайк к записи.
+        Assert.assertEquals(comment, wallPostsForm.getTextFromRequiredComment(IndexEnum.ZERO.getIndexValue()), "sorry, your textBoxes don`t match");
         Logger.getInstance().info("Step 10 has been started");
-        wallPostsForm.setRequiredLike(0);
-
-//11[API] Через запрос к API убедиться, что у записи появился лайк от правильного пользователя
+        wallPostsForm.setRequiredLike(IndexEnum.ZERO.getIndexValue());
         Logger.getInstance().info("Step 11 has been started");
-        Assert.assertEquals(ApiMethods.likesIsLiked(post_id), 1,"sorry, like`s owner don`t match");
-
-//12[API] Через запрос к API удалить созданную запись
+        Assert.assertEquals(ApiMethods.likesIsLiked(post_id), IndexEnum.FIRST.getIndexValue(),"sorry, like`s owner don`t match");
         Logger.getInstance().info("Step 12 has been started");
         ApiMethods.wallDelete(post_id);
-//13[UI] Не обновляя страницу убедиться, что запись удалена
         Logger.getInstance().info("Step 13 has been started");
-        Assert.assertTrue(wallPostsForm.isListOfPostsPresent(0), "sorry your message is still present");
-
-
+        Assert.assertTrue(wallPostsForm.isListOfPostsPresent(IndexEnum.ZERO.getIndexValue()), "sorry your message is still present");
 
     }
 }

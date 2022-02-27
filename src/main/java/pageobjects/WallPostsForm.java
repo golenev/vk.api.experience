@@ -61,5 +61,4 @@ public class WallPostsForm extends Form {
         hiddenComment.click();
     }
 
-
 }

@@ -14,6 +14,7 @@ import static utils.TestingConfigurations.*;
 import static io.restassured.RestAssured.given;
 import static utils.TestingConfigurations.*;
 import static utils.FileUtils.*;
+import static utils.StringUtils.*;
 
 public class ApiMethods {
 
@@ -91,11 +92,11 @@ public class ApiMethods {
                 .formParam(FormParamEnum.FORM_PARAM.getOwnerId(), getTestingValue("/ownerId"))
                 .formParam(FormParamEnum.FORM_PARAM.getPostId(), post_id)
                 .formParam(FormParamEnum.FORM_PARAM.getMessage(), message)
-                .formParam(FormParamEnum.FORM_PARAM.getAttachments(), FormParamEnum.FORM_PARAM.getPhoto() + getTestingValue("/photoOwnerId") + photo_id)
+                .formParam(FormParamEnum.FORM_PARAM.getAttachments(), String.valueOf(buildString(FormParamEnum.FORM_PARAM.getPhoto(),getTestingValue("/photoOwnerId"), photo_id )))
                 .post()
                 .then()
                 .extract().response();
-    }
+            }
 
     public static void wallCreateComment(int post_id, String message) {
         prepareForResponse();

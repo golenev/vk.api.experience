@@ -14,6 +14,7 @@ public class LoginPage extends Form {
     public LoginPage() {
         super(By.cssSelector("#index_login"), "authorization window");
     }
+
     public void setLoginField (String login){
         loginField.clearAndType(login);
     }
