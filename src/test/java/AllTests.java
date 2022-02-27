@@ -25,7 +25,7 @@ public class AllTests extends BaseTest{
         loginPage.setPasswordField(getTestingValue("/password"));
         loginPage.loginButtonClick();
         myPage.myPageBntClick();
-        Logger.getInstance().info("You have logged in to the desired page via GUI");
+        Logger.getInstance().info("You have logged in to the required page via GUI");
         Logger.getInstance().info("Step 4 has been started");
         int post_id = ApiMethods.wallPost(RandomGenerator.faker.app().author());
         Logger.getInstance().info("Step 5 has been started");

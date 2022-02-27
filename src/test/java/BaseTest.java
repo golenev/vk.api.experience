@@ -12,8 +12,8 @@ public abstract class BaseTest {
         browser.maximize();
     }
 
-   /* @AfterMethod
+    @AfterMethod
     public void tearDown() {
         browser.quit();
-    }*/
+    }
 }
